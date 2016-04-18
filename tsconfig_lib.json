@@ -12,6 +12,7 @@
     "outDir": "lib",
     "rootDir": "src"
   },
+  "compileOnSave": false,
   "exclude": [
     "node_modules",
     "static",
@@ -20,5 +21,6 @@
     "__tests__",
     "lib",
     "umd",
+    "mocks"
   ]
 }
