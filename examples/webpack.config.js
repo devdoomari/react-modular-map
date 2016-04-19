@@ -12,6 +12,11 @@ module.exports = {
  * Should be an empty object if it's generating a test build
  * Karma will set this when it's a test build
  */
+  entry: {
+    mapView: [
+      './examples/mapview',
+    ],
+  },
 
   output: {
     // Absolute output directory
@@ -25,6 +30,13 @@ module.exports = {
     // Filename for non-entry points
     // Only adds hash in build mode
     chunkFilename: '[name].[hash].js',
+  },
+
+  resolve: {
+    extensions: [
+      '', '.js', '.es6', '.jsx',
+      '.ts', '.tsx',
+    ],
   },
 
   devtool: 'inline-source-map',
@@ -42,11 +54,11 @@ module.exports = {
       exclude: /node_modules/,
     }, {
       test: /\.ts$/,
-      loadler: 'ts',
+      loader: 'ts',
       exclude: /node_modules/,
     }, {
       test: /\.tsx$/,
-      loadler: 'ts',
+      loader: 'ts',
       exclude: /node_modules/,
     }, {
       // Copy files to output,
@@ -65,7 +77,7 @@ module.exports = {
     new HtmlWebpackPlugin({
       template: './examples/map.html',
       inject: 'body',
-      chunks: ['map'],
+      chunks: ['mapView'],
       filename: 'map.html',
     }),
   ],

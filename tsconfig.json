@@ -9,8 +9,8 @@
     "experimentalDecorators": true,
     "noLib": false,
     "jsx": "react",
-    "outDir": "lib",
-    "rootDir": "src"
+    "outDir": "./__tmp__",
+    "rootDir": "."
   },
   "exclude": [
     "node_modules",
@@ -18,7 +18,8 @@
     "typings/browser.d.ts",
     "typings/browser",
     "__tests__",
+    "__tmp__",
     "lib",
-    "umd",
+    "umd"
   ]
 }

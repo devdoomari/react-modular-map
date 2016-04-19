@@ -1,7 +1,11 @@
 {
   "ambientDependencies": {
+    "core-decorators": "registry:dt/core-decorators#0.10.0+20160316155526",
+    "eventemitter2": "registry:dt/eventemitter2#0.14.4+20160316155526",
+    "lodash": "registry:dt/lodash#3.10.0+20160330154726",
     "q": "registry:dt/q#0.0.0+20160417152954",
     "react": "registry:dt/react#0.14.0+20160412154040",
+    "react-bootstrap": "registry:dt/react-bootstrap#0.0.0+20160322135206",
     "react-dom": "registry:dt/react-dom#0.14.0+20160412154040"
   }
 }

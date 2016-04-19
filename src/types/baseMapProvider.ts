@@ -13,11 +13,12 @@ import * as Q from 'q';
 abstract class BaseMapProvider implements IMapProvider {
   initDefer: any;
   initPromise: any;
-  constructor() {
+  constructor(options: any) {
     this.initDefer = Q.defer<any>();
     this.initPromise = this.initDefer.promise;
   }
   abstract initialize(domNode: HTMLElement, options: any): void;
+  abstract setDimensions(dimension: Interfaces.IDimension);
   protected abstract __setCenter(center: Interfaces.ILatLng): void;
   protected abstract __setZoom(zoomLevel: Number): void;
   abstract onBoundsChanged(handler: IBoundsChangedHandler);

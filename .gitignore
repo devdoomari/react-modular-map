@@ -3,3 +3,5 @@ dist
 lib
 umd
 typings
+__tmp__
+*.log
