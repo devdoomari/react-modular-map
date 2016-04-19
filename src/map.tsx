@@ -18,8 +18,8 @@ export default class ReactMap extends React.Component<ReactMapProps, ReactMapSta
   constructor(props) {
     super(props);
     this.mouseEventsSubject = new Rx.Subject<any>();
-    this.mouseEventsSubject.subscribe((data) => {
-      console.log(`GOT EVENT: ${data}`);
+    this.mouseEventsSubject.subscribe((mouseEvent) => {
+      console.log(`GOT EVENT: ${mouseEvent.type}`);
     });
   }
   handleMouseEvent = (reactEvent) => {
@@ -36,12 +36,30 @@ export default class ReactMap extends React.Component<ReactMapProps, ReactMapSta
   };
   render() {
     return (
-      <div onMouseDown={this.handleMouseEvent}
-           onMouseUp={this.handleMouseEvent}
-           onDragStart={this.handleMouseEvent}
-           onDragEnd={this.handleMouseEvent}
+      <div
       >
-        <div ref="mapDiv"/>
+        <div ref="mapDiv"
+             key="map"
+             style={{
+               width: this.props.style.width,
+               height: this.props.style.height,
+               zIndex: -30,
+               position: 'absolute',
+             }}
+        />
+        <div
+          key="eventCatcher"
+          onMouseDown={this.handleMouseEvent}
+          onMouseUp={this.handleMouseEvent}
+          onMouseMove={this.handleMouseEvent}
+          onDragStart={this.handleMouseEvent}
+          onDragEnd={this.handleMouseEvent}
+          style={{
+            width: this.props.style.width,
+            height: this.props.style.height,
+            position: 'absolute',
+          }}
+        />
       </div>
     );
   }
