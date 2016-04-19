@@ -13,18 +13,30 @@ export interface ReactMapState {
 
 }
 export default class ReactMap extends React.Component<ReactMapProps, ReactMapState> {
-  mouseEventsSubject: any;
+  mouseEventsStream: any;
+  mouseDownStream: any;
+  mouseUpStream: any;
+  mouseMoveStream: any;
   refs: any;
   constructor(props) {
     super(props);
-    this.mouseEventsSubject = new Rx.Subject<any>();
-    this.mouseEventsSubject.subscribe((mouseEvent) => {
+    this.mouseEventsStream = new Rx.Subject<any>();
+    this.mouseDownStream = this.mouseEventsStream.filter(
+      event => event.type === 'mousedown'
+    );
+    this.mouseUpStream = this.mouseEventsStream.filter(
+      event => event.type === 'mouseup'
+    );
+    this.mouseMoveStream = this.mouseEventsStream.filter(
+      event => event.type === 'mousemove'
+    );
+    this.mouseEventsStream.subscribe((mouseEvent) => {
       console.log(`GOT EVENT: ${mouseEvent.type}`);
     });
   }
   handleMouseEvent = (reactEvent) => {
     const nativeEvent = reactEvent.nativeEvent;
-    this.mouseEventsSubject.next(nativeEvent);
+    this.mouseEventsStream.next(nativeEvent);
   };
   componentDidMount = () => {
     const map = this.refs.mapDiv;
