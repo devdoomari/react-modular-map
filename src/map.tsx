@@ -1,45 +1,54 @@
 import * as React from 'react';
-import BaseMapProvider from './types/baseMapProvider';
-export { BaseMapProvider };
 import * as Rx from 'rxjs';
+
+import BaseMapProvider from './types/base-map-provider';
+export { BaseMapProvider };
+import {
+  ILatLng,
+  IBehavior,
+} from './interfaces';
+import MapController from './map-controller';
 
 export interface ReactMapProps {
   mapProvider: BaseMapProvider;
   style: any;
   width: Number;
   height: Number;
+  behaviors: Array<IBehavior>;
 }
 export interface ReactMapState {
 
 }
 export default class ReactMap extends React.Component<ReactMapProps, ReactMapState> {
-  mouseEventsStream: any;
-  mouseDownStream: any;
-  mouseUpStream: any;
-  mouseMoveStream: any;
+  eventsStream: any;
   refs: any;
+  mapController: MapController;
   constructor(props) {
     super(props);
-    this.initMouseStream();
-  }
-  initMouseStream = () => {
-    this.mouseEventsStream = new Rx.Subject<any>();
-    this.mouseDownStream = this.mouseEventsStream.filter(
-      event => event.type === 'mousedown'
-    );
-    this.mouseUpStream = this.mouseEventsStream.filter(
-      event => event.type === 'mouseup'
-    );
-    this.mouseMoveStream = this.mouseEventsStream.filter(
-      event => event.type === 'mousemove'
-    );
-    this.mouseEventsStream.subscribe((mouseEvent) => {
-      console.log(`GOT EVENT: ${mouseEvent.type}`);
+    this.eventsStream = new Rx.Subject<any>();
+    this.mapController = new MapController({
+      pointToLatLng: this.props.mapProvider.pointToLatLng,
+      latLngToPoint: this.props.mapProvider.latLngToPoint,
     });
+    this.initMapController(this.mapController);
+    for (let i in this.props.behaviors) {
+      const behavior = this.props.behaviors[i];
+      behavior.initialize(this.eventsStream, this.mapController);
+    }
   }
+  initMapController = (mapController: MapController) => {
+    mapController.subscribeSetCenter(this.handleSetCenter);
+    mapController.subscribeSetZoom(this.handleSetZoom);
+  };
+  handleSetCenter = (center: ILatLng) => {
+    this.props.mapProvider.setCenter(center);
+  };
+  handleSetZoom = (zoomLevel: Number) => {
+    this.props.mapProvider.setZoom(zoomLevel);
+  };
   handleMouseEvent = (reactEvent) => {
     const nativeEvent = reactEvent.nativeEvent;
-    this.mouseEventsStream.next(nativeEvent);
+    this.eventsStream.next(nativeEvent);
   };
   componentDidMount = () => {
     const map = this.refs.mapDiv;
