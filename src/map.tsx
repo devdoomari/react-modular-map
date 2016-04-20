@@ -29,6 +29,8 @@ export default class ReactMap extends React.Component<ReactMapProps, ReactMapSta
     this.mapController = new MapController({
       pointToLatLng: this.props.mapProvider.pointToLatLng,
       latLngToPoint: this.props.mapProvider.latLngToPoint,
+      getCenter: this.props.mapProvider.getCenter,
+      getZoomLevel: this.props.mapProvider.getZoomLevel,
     });
     this.initMapController(this.mapController);
     for (let i in this.props.behaviors) {

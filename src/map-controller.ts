@@ -10,15 +10,21 @@ import {
 export interface IMapControllerArgs {
   pointToLatLng: any;
   latLngToPoint: any;
+  getCenter: any;
+  getZoomLevel: any;
 }
 export default class MapController {
   eventEmitter: any;
-  _pointToLatLng: any;
-  _latLngToPoint: any;
+  pointToLatLng: any;
+  latLngToPoint: any;
+  getCenter: any;
+  getZoomLevel: any;
   constructor(args: IMapControllerArgs) {
     this.eventEmitter = new EventEmitter();
-    this._pointToLatLng = args.pointToLatLng;
-    this._latLngToPoint = args.latLngToPoint;
+    this.pointToLatLng = args.pointToLatLng;
+    this.latLngToPoint = args.latLngToPoint;
+    this.getZoomLevel = args.getZoomLevel;
+    this.getCenter = args.getCenter;
   }
   subscribeSetCenter(func) {
     this.eventEmitter.on(SET_CENTER, func);
@@ -31,11 +37,5 @@ export default class MapController {
   }
   setZoom(zoomLevel: Number) {
     this.eventEmitter.emit(SET_ZOOMLEVEL, zoomLevel);
-  }
-  pointToLatLng(point: IPoint) {
-    return this._pointToLatLng(point);
-  }
-  latLngToPoint(latlng: ILatLng) {
-    return this._latLngToPoint(latlng);
   }
 }

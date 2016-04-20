@@ -7,6 +7,10 @@ Synchronous-map provider
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 import { EventEmitter2 as EventEmitter } from 'eventemitter2';
+import {
+  autobind,
+} from 'core-decorators';
+
 import SyncMapView from './sync-map-view';
 
 import {
@@ -28,6 +32,7 @@ export default class SyncMapProvider extends BaseMapProvider {
     super(options);
     this.mapController = new MapController();
   }
+  @autobind
   initialize(domNode: HTMLElement, options: any) {
     this.domNode = domNode;
     ReactDOM.render(
@@ -35,18 +40,29 @@ export default class SyncMapProvider extends BaseMapProvider {
     , this.domNode);
     this.initDefer.resolve();
   }
+  @autobind
   setDimensions(dimension: Interfaces.IDimension) {
     this.width = dimension.width;
     this.height = dimension.height;
     this.mapController.setDimensions(dimension);
   }
+  @autobind
   __setCenter(center: Interfaces.ILatLng) {
     this.center = center;
     this.mapController.setCenter(center);
   }
+  @autobind
   __setZoom(zoomLevel: Number) {
     this.zoomLevel = zoomLevel;
     this.mapController.setZoomLevel(zoomLevel);
+  }
+  @autobind
+  getCenter(): Interfaces.ILatLng {
+    return this.center;
+  }
+  @autobind
+  getZoomLevel() {
+    return this.zoomLevel;
   }
   onBoundsChanged(handler: Interfaces.IBoundsChangedHandler) {
 
@@ -57,17 +73,13 @@ export default class SyncMapProvider extends BaseMapProvider {
   onCenterChanged(handler: Interfaces.ICenterChangedHandler) {
 
   }
+  @autobind
   pointToLatLng(point: Interfaces.IPoint): Interfaces.ILatLng {
-    return {
-      lat: 1,
-      lng: 2,
-    };
+    return this.mapController.pointToLatLng(point);
   }
+  @autobind
   latLngToPoint(latlng: Interfaces.ILatLng): Interfaces.IPoint {
-    return {
-      x: 1,
-      y: 1,
-    }
+    return this.mapController.latLngToPoint(latlng);
   }
 
 

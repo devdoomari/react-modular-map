@@ -25,6 +25,8 @@ abstract class BaseMapProvider implements IMapProvider {
   abstract onZoomChanged(handler: IZoomLevelChangedHandler);
   abstract onCenterChanged(handler: ICenterChangedHandler);
 
+  abstract getCenter(): Interfaces.ILatLng;
+  abstract getZoomLevel(): Number;
   abstract pointToLatLng(point: Interfaces.IPoint): Interfaces.ILatLng;
   abstract latLngToPoint(latlng: Interfaces.ILatLng): Interfaces.IPoint;
   async setCenter(center: Interfaces.ILatLng) {

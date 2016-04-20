@@ -10,6 +10,8 @@ import {
 
 export default class MapController {
   eventEmitter: any;
+  latLngToPoint: any;
+  pointToLatLng: any;
   constructor() {
     this.eventEmitter = new EventEmitter();
   }
