@@ -2,7 +2,7 @@
   "name": "react-map",
   "version": "0.0.1",
   "description": "React wrapper for daum map",
-  "main": "lib/react-map.js",
+  "main": "lib/index.js",
   "scripts": {
     "postinstall": "$(npm bin)/typings install && npm run build",
     "clean": "rm -rf lib umd __tmp__",
@@ -12,7 +12,8 @@
     "serve_examples": "npm run _serve_examples & npm run _watch_ts_for_examples",
     "build_commonjs": "npm run clean && node_modules/.bin/tsc",
     "watch:build_commonjs": "npm run clean && node_modules/.bin/tsc --project tsconfig_lib.json --watch",
-    "build": "npm run clean && node_modules/.bin/tsc --module umd --outdir umd"
+    "build_umd": "npm run clean && node_modules/.bin/tsc --project tsconfig_lib.json --module umd --outdir umd",
+    "build": "npm run clean && node_modules/.bin/tsc --project tsconfig_lib.json"
   },
   "repository": {
     "type": "git",
@@ -62,6 +63,7 @@
     "jest-cli": "^0.10.0",
     "raw-loader": "^0.5.1",
     "react-bootstrap": "^0.28.5",
+    "rxjs": "^5.0.0-beta.6",
     "ts-loader": "^0.8.2",
     "tslint": "^3.7.4",
     "typescript": "^1.8.10",
