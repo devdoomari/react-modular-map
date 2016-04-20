@@ -11,7 +11,7 @@ import {
 import MapController from './map_controller';
 import {
   Interfaces,
-} from '../src'
+} from '../src';
 export interface ISyncMapViewProps {
   controller: MapController;
 }
@@ -45,8 +45,15 @@ export default class SyncMapView extends React.Component<any, any> {
     this.props.controller.unsubscribeCenterChanged(this.handleSetCenter);
   }
   @autobind
-  latLngToPoint(latlng: Interfaces.ILatLng) {
+  latLngToPoint(latlng: Interfaces.ILatLng): Interfaces.IPoint {
+    const lngFromLeftmost = this.state.size + latlng.lng;
+    const left = lngFromLeftmost * this.__getUnitLongToPixels();
 
+    const latFromTopmost = this.state.size + latlng.lat;
+    const top = latFromTopmost * this.__getUnitLatToPixels();
+    return {
+      left, top,
+    };
   }
   @autobind
   pointToLatLng(point: Interfaces.IPoint) {
@@ -58,8 +65,8 @@ export default class SyncMapView extends React.Component<any, any> {
     const left = leftAt0 + this.__getUnitLongToPixels() * this.state.center.lng;
     const top = topAt0 + this.__getUnitLatToPixels() * this.state.center.lat;
 
-    const mapX = left + Number(point.x); //wtf typescript?
-    const mapY = top + Number(point.y);
+    const mapX = left + Number(point.left); // wtf typescript?
+    const mapY = top + Number(point.top);
 
     const mapXToCenter = mapX - centerMapX;
     const mapYToCenter = mapY - centerMapY;

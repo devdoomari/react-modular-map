@@ -1,6 +1,6 @@
 import ReactDOM from 'react-dom';
 import React, {
-  Component
+  Component,
 } from 'react';
 import {
   Row, Col,
@@ -49,6 +49,6 @@ class MapViewDemo extends Component {
 }
 
 ReactDOM.render(
-  <MapViewDemo/>,
+  <MapViewDemo />,
   document.getElementById('app')
 );
