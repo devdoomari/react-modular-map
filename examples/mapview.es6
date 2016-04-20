@@ -12,6 +12,7 @@ import _ from 'lodash';
 import SyncMockMapProvider from '../__tmp__/mocks/sync-map-provider';
 import {
   Map,
+  Behaviors,
 } from '../__tmp__/src';
 import {
   APIKEY,
@@ -27,12 +28,21 @@ class MapViewDemo extends Component {
   render() {
     return (
       <div>
-        <Map
-          mapProvider={this.syncMockMapProvider}
-          style={{
-            width: 800, height: 600,
-          }}
-        />
+        <h1> Map View Test! </h1>
+        <Row>
+          <Col md={1} sm={1} />
+          <Col md={8} sm={8} >
+            <Map
+              mapProvider={this.syncMockMapProvider}
+              style={{
+                width: 600, height: 500,
+              }}
+              behaviors={[
+                new Behaviors.ClickToCenter(),
+              ]}
+            />
+          </Col>
+        </Row>
       </div>
     );
   }

@@ -79,8 +79,8 @@ export default class SyncMapView extends React.Component<any, any> {
         <div
           style={{
             position: 'absolute',
-            top: 50,
-            left: 50,
+            top: -50,
+            left: -50,
           }}
         >
           {gridTable}
