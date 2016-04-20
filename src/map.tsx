@@ -20,6 +20,9 @@ export default class ReactMap extends React.Component<ReactMapProps, ReactMapSta
   refs: any;
   constructor(props) {
     super(props);
+    this.initMouseStream();
+  }
+  initMouseStream = () => {
     this.mouseEventsStream = new Rx.Subject<any>();
     this.mouseDownStream = this.mouseEventsStream.filter(
       event => event.type === 'mousedown'
