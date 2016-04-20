@@ -27,6 +27,7 @@ export default class SyncMapView extends React.Component<any, any> {
     super(props);
     this.props.controller.pointToLatLng = this.pointToLatLng;
     this.props.controller.latLngToPoint = this.latLngToPoint;
+    this.props.controller.getCenter = this.getCenter;
     this.state = {
       center: {
         lat: 0, lng: 0,

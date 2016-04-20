@@ -39,6 +39,7 @@ class MapViewDemo extends Component {
               }}
               behaviors={[
                 new Behaviors.ClickToCenter(),
+                new Behaviors.DragToMoveAround(),
               ]}
             />
           </Col>

@@ -48,7 +48,6 @@ export default class SyncMapProvider extends BaseMapProvider {
   }
   @autobind
   __setCenter(center: Interfaces.ILatLng) {
-    this.center = center;
     this.mapController.setCenter(center);
   }
   @autobind
@@ -58,7 +57,7 @@ export default class SyncMapProvider extends BaseMapProvider {
   }
   @autobind
   getCenter(): Interfaces.ILatLng {
-    return this.center;
+    return this.mapController.getCenter();
   }
   @autobind
   getZoomLevel() {

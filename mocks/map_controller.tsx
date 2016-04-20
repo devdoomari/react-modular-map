@@ -12,6 +12,7 @@ export default class MapController {
   eventEmitter: any;
   latLngToPoint: any;
   pointToLatLng: any;
+  getCenter: any;
   constructor() {
     this.eventEmitter = new EventEmitter();
   }
