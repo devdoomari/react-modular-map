@@ -4,8 +4,6 @@
   "description": "React wrapper for daum map",
   "main": "lib/index.js",
   "scripts": {
-    "preinstall": "npm install typings typescript",
-    "postinstall": "$(npm bin)/typings install && npm run build",
     "clean": "rm -rf lib umd __tmp__",
     "lint": "$(npm bin)/tslint",
     "_serve_examples": "$(npm bin)/webpack-dev-server --config examples/webpack.config.js",
@@ -14,7 +12,7 @@
     "build_commonjs": "npm run clean && node_modules/.bin/tsc",
     "watch:build_commonjs": "npm run clean && node_modules/.bin/tsc --project tsconfig_lib.json --watch",
     "build_umd": "npm run clean && node_modules/.bin/tsc --project tsconfig_lib.json --module umd --outdir umd",
-    "build": "npm run clean && node_modules/.bin/tsc --project tsconfig_lib.json"
+    "build": "npm run clean && $(npm bin)/typings install && $(npm bin)/tsc --project tsconfig_lib.json"
   },
   "repository": {
     "type": "git",
