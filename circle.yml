@@ -18,4 +18,5 @@ deployment:
       - npm run build
       - git add -f lib
       - git commit --allow-empty -m $'generated from:'"$CIRCLE_SHA1"$'\ntriggered by:'"$CIRCLE_USERNAME"$'\n[ci skip]'
-      - git push origin dist
+      - git tag -a $'dist_'"$CIRCLE_BUILD_NUM" -m "dist"
+      - git push origin dist --follow-tags
