@@ -4,7 +4,8 @@
   "description": "React wrapper for daum map",
   "main": "lib/index.js",
   "scripts": {
-    "prepublish": "$(npm bin)/typings install && npm run build",
+    "preinstall": "npm install typings typescript",
+    "postinstall": "$(npm bin)/typings install && npm run build",
     "clean": "rm -rf lib umd __tmp__",
     "lint": "$(npm bin)/tslint",
     "_serve_examples": "$(npm bin)/webpack-dev-server --config examples/webpack.config.js",
