@@ -1,4 +1,3 @@
-/// <reference path="../../node_modules/rxjs/Rx.d.ts" />
 import * as Rx from 'rxjs';
 
 import {
