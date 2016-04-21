@@ -12,6 +12,9 @@ import MapController from './map_controller';
 import {
   Interfaces,
 } from '../src';
+
+import MapCalculator from './map-calculator';
+
 export interface ISyncMapViewProps {
   controller: MapController;
 }
@@ -23,6 +26,7 @@ export interface ISyncMapViewState {
 
 export default class SyncMapView extends React.Component<any, any> {
   eventEmitter: any;
+  mapCalculator: MapCalculator;
   constructor(props) {
     super(props);
     this.props.controller.pointToLatLng = this.pointToLatLng;
@@ -32,11 +36,20 @@ export default class SyncMapView extends React.Component<any, any> {
       center: {
         lat: 0, lng: 0,
       },
-      size: 7,
+      minLat: -7,
+      maxLat: 7,
+      minLng: -5,
+      maxLng: 5,
       width: 100,
       height: 100,
       zoomLevel: 1,
     };
+    const unitLat = this.__getUnitLatToPixels();
+    const unitLng = this.__getUnitLongToPixels();
+    const mapCalculatorArgs = Object.assign({}, this.state, {
+      unitLat, unitLng,
+    });
+    this.mapCalculator = new MapCalculator(mapCalculatorArgs);
   }
   componentDidMount() {
     this.props.controller.subscribeCenterChanged(this.handleSetCenter);
@@ -47,36 +60,16 @@ export default class SyncMapView extends React.Component<any, any> {
   }
   @autobind
   latLngToPoint(latlng: Interfaces.ILatLng): Interfaces.IPoint {
-    const lngFromLeftmost = this.state.size + latlng.lng;
-    const left = lngFromLeftmost * this.__getUnitLongToPixels();
-
-    const latFromTopmost = this.state.size + latlng.lat;
-    const top = latFromTopmost * this.__getUnitLatToPixels();
+    const pointOnView = this.mapCalculator.latLngToPointOnView(latlng);
     return {
-      left, top,
+      left: pointOnView.leftOnView, top: pointOnView.topOnView,
     };
   }
   @autobind
-  pointToLatLng(point: Interfaces.IPoint) {
-    const centerMapX = this.state.size * this.__getUnitLongToPixels();
-    const centerMapY = this.state.size * this.__getUnitLatToPixels();
-
-    const leftAt0 = centerMapX - (this.state.width / 2);
-    const topAt0 = centerMapY - (this.state.height / 2);
-    const left = leftAt0 + this.__getUnitLongToPixels() * this.state.center.lng;
-    const top = topAt0 + this.__getUnitLatToPixels() * this.state.center.lat;
-
-    const mapX = left + Number(point.left); // wtf typescript?
-    const mapY = top + Number(point.top);
-
-    const mapXToCenter = mapX - centerMapX;
-    const mapYToCenter = mapY - centerMapY;
-
-    const latlng = {
-      lng: mapXToCenter / this.__getUnitLongToPixels(),
-      lat: mapYToCenter / this.__getUnitLatToPixels(),
-    };
-    console.log(latlng);
+  pointToLatLng(point: Interfaces.IPoint): Interfaces.ILatLng {
+    const latlng = this.mapCalculator.pointOnViewToLatLng({
+      leftOnView: point.left, topOnView: point.top,
+    });
     return latlng;
   }
   @autobind
@@ -109,27 +102,30 @@ export default class SyncMapView extends React.Component<any, any> {
     return 50 / (this.state.zoomLevel);
   }
   render() {
-    const range = _.range(-this.state.size, this.state.size);
+    const unitLat = this.__getUnitLatToPixels();
+    const unitLng = this.__getUnitLongToPixels();
+    const args = Object.assign({}, this.state, {
+      unitLat, unitLng,
+    });
+    this.mapCalculator = new MapCalculator(args);
+    const xRange = _.range(this.state.minLng, this.state.maxLng);
+    const yRange = _.range(this.state.minLat, this.state.maxLat);
 
-    const centerMapX = this.state.size * this.__getUnitLongToPixels();
-    const centerMapY = this.state.size * this.__getUnitLatToPixels();
-
-    const leftAt0 = centerMapX - (this.state.width / 2);
-    const topAt0 = centerMapY - (this.state.height / 2);
-    const left = -(leftAt0 + this.__getUnitLongToPixels() * this.state.center.lng);
-    const top = -(topAt0 + this.__getUnitLatToPixels() * this.state.center.lat);
+    const viewOffsetFromMap = this.mapCalculator.getViewOffsetOnMap();
+    const left = -(viewOffsetFromMap.leftFromMinLng);
+    const top = -(viewOffsetFromMap.topFromMinLat);
     const gridTable = (
       <div>
-        {_.map(range, (y) => {
+        {_.map(yRange, (y) => {
           return (
             <div key={y}>
-              {_.map(range, (x) => {
+              {_.map(xRange, (x) => {
                 return (
                   <div
                     key={`${x}:${y}`}
                     style={{
-                      width: this.__getUnitLongToPixels(),
-                      height: this.__getUnitLatToPixels(),
+                      width: unitLng,
+                      height: unitLat,
                       float: 'left',
                       border: '2px solid black',
                       textAlign: 'center',
@@ -158,8 +154,8 @@ export default class SyncMapView extends React.Component<any, any> {
             position: 'absolute',
             top,
             left,
-            width: this.state.size * this.__getUnitLongToPixels() * 2,
-            height: this.state.size * this.__getUnitLatToPixels() * 2,
+            width: (this.state.maxLng - this.state.minLng) * unitLng * 2,
+            height: (this.state.maxLat - this.state.minLat) * unitLat * 2,
           }}
         >
           {gridTable}
