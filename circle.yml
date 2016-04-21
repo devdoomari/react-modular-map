@@ -1,0 +1,21 @@
+machine:
+  node:
+    version: 5.8.0
+
+test:
+  override:
+    - npm run build
+
+deployment:
+  master:
+    branch: master
+    commands:
+      - git config user.email "no-preply@meshkorea.net"
+      - git config user.name "meshkorea-dev"
+      - git checkout dist
+      - git pull
+      - git merge -X theirs --no-edit master
+      - npm run build
+      - git add -f build
+      - git commit --allow-empty -m $'generated from:'"$CIRCLE_SHA1"$'\ntriggered by:'"$CIRCLE_USERNAME"$'\n[ci skip]'
+      - git push origin dist
