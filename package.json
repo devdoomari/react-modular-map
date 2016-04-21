@@ -1,8 +1,9 @@
 {
   "name": "react-modular-map",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Modular ReactJS Map (use with providers)",
   "main": "lib/index.js",
+  "typings": "lib/index",
   "scripts": {
     "clean": "rm -rf lib umd __tmp__",
     "lint": "$(npm bin)/tslint",
