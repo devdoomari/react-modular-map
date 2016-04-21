@@ -1,18 +1,19 @@
 {
-  "name": "react-map",
+  "name": "react-modular-map",
   "version": "0.0.1",
-  "description": "React wrapper for daum map",
+  "description": "Modular ReactJS Map (use with providers)",
   "main": "lib/index.js",
   "scripts": {
-    "clean_proj": "rm -rf lib umd __tmp__",
+    "clean": "rm -rf lib umd __tmp__",
     "lint": "$(npm bin)/tslint",
+    "prepublish": "npm run clean && npm run build",
     "_serve_examples": "$(npm bin)/webpack-dev-server --config examples/webpack.config.js",
     "_watch_ts_for_examples": "$(npm bin)/tsc --watch",
     "serve_examples": "npm run _serve_examples & npm run _watch_ts_for_examples",
     "build_commonjs": "npm run clean && node_modules/.bin/tsc",
     "watch:build_commonjs": "npm run clean && node_modules/.bin/tsc --project tsconfig_lib.json --watch",
     "build_umd": "npm run clean && node_modules/.bin/tsc --project tsconfig_lib.json --module umd --outdir umd",
-    "build": "npm run clean && $(npm bin)/typings install && $(npm bin)/tsc --project tsconfig_lib.json"
+    "build": "$(npm bin)/typings install && $(npm bin)/tsc --project tsconfig_lib.json"
   },
   "repository": {
     "type": "git",
