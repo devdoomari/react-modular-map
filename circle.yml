@@ -13,7 +13,7 @@ deployment:
       - git config user.email "no-preply@meshkorea.net"
       - git config user.name "meshkorea-dev"
       - git checkout -b dist
-      - git pull
+      - git pull origin master
       - git merge -X theirs --no-edit master
       - npm run build
       - git add -f build
