@@ -1,6 +1,6 @@
 {
   "name": "react-modular-map",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "Modular ReactJS Map (use with providers)",
   "main": "lib/index.js",
   "typings": "lib/index",
@@ -69,6 +69,7 @@
     "rxjs": "^5.0.0-beta.6",
     "ts-loader": "^0.8.2",
     "tslint": "^3.7.4",
+    "typescript": "^1.8.10",
     "webpack": "^1.12.9",
     "webpack-dev-server": "^1.14.0",
     "webpack-hot-middleware": "^2.6.0"
