@@ -15,7 +15,7 @@
     "watch:build_commonjs": "npm run clean && node_modules/.bin/tsc --project tsconfig_lib.json --watch",
     "build_umd": "npm run clean && node_modules/.bin/tsc --project tsconfig_lib.json --module umd --outdir umd",
     "build_ts_lib_es6": "$(npm bin)/typings install && $(npm bin)/tsc --project tsconfig_lib.json",
-    "lib_es6_to_lib": "$(npm bin)/babel lib_es6 -d lib && $(npm bin)/copyfiles -u 1 'lib_es6/*.d.ts' lib",
+    "lib_es6_to_lib": "$(npm bin)/babel lib_es6 -d lib && $(npm bin)/copyfiles -u 1 'lib_es6/*.d.ts' lib && $(npm bin)/copyfiles -u 1 'lib_es6/**/*.d.ts' lib",
     "build": "npm run build_ts_lib_es6 && npm run lib_es6_to_lib"
   },
   "repository": {
