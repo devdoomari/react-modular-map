@@ -15,6 +15,14 @@ export interface ReactMapProps {
   width: Number;
   height: Number;
   behaviors: Array<IBehavior>;
+
+  // for un-controlled input
+  initialLat?: Number;
+  initialLng?: Number;
+
+  // for controlled input
+  lat: Number;
+  lng: Number;
 }
 export interface ReactMapState {
 
@@ -42,6 +50,21 @@ export default class ReactMap extends React.Component<ReactMapProps, ReactMapSta
     mapController.subscribeSetCenter(this.handleSetCenter);
     mapController.subscribeSetZoom(this.handleSetZoom);
   };
+
+  componentDidMount = () => {
+    const map = this.refs.mapDiv;
+    this.props.mapProvider.initialize(map, {
+      center: {
+        lat: this.props.lat ? this.props.lat : this.props.initialLat,
+        lng: this.props.lng ? this.props.lng : this.props.initialLng,
+      },
+      dimension: {
+        width: this.props.style.width,
+        height: this.props.style.height,
+      },
+    });
+  };
+
   handleSetCenter = (center: ILatLng) => {
     this.props.mapProvider.setCenter(center);
   };
@@ -52,14 +75,7 @@ export default class ReactMap extends React.Component<ReactMapProps, ReactMapSta
     const nativeEvent = reactEvent.nativeEvent;
     this.eventsStream.next(nativeEvent);
   };
-  componentDidMount = () => {
-    const map = this.refs.mapDiv;
-    this.props.mapProvider.initialize(map, null);
-    this.props.mapProvider.setDimensions({
-      width: this.props.style.width,
-      height: this.props.style.height,
-    });
-  };
+
   render() {
     return (
       <div

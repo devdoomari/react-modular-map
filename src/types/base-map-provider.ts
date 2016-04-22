@@ -7,6 +7,7 @@ import {
   ICenterChangedHandler,
   IZoomLevelChangedHandler,
   IMapProvider,
+  IMapInitArgs,
 } from '../interfaces/map_provider';
 import * as Q from 'q';
 
@@ -17,7 +18,7 @@ abstract class BaseMapProvider implements IMapProvider {
     this.initDefer = Q.defer<any>();
     this.initPromise = this.initDefer.promise;
   }
-  abstract initialize(domNode: HTMLElement, options: any): void;
+  abstract async initialize(domNode: HTMLElement, options: IMapInitArgs);
   abstract setDimensions(dimension: Interfaces.IDimension);
   protected abstract __setCenter(center: Interfaces.ILatLng): void;
   protected abstract __setZoom(zoomLevel: Number): void;
