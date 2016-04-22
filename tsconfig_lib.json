@@ -9,7 +9,7 @@
     "experimentalDecorators": true,
     "noLib": false,
     "jsx": "react",
-    "outDir": "lib",
+    "outDir": "lib_es6",
     "rootDir": "src"
   },
   "compileOnSave": false,
