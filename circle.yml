@@ -17,6 +17,7 @@ deployment:
       - git merge -X theirs --no-edit master
       - npm run build
       - git add -f lib
+      - git add -f typings
       - git commit --allow-empty -m $'generated from:'"$CIRCLE_SHA1"$'\ntriggered by:'"$CIRCLE_USERNAME"$'\n[ci skip]'
       - git tag -a $'dist_'"$CIRCLE_BUILD_NUM" -m "dist"
       - git push --force origin dist --follow-tags
