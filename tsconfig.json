@@ -20,6 +20,7 @@
     "__tests__",
     "__tmp__",
     "lib",
+    "lib_es6",
     "umd"
   ]
 }

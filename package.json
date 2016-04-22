@@ -5,7 +5,7 @@
   "main": "lib/index.js",
   "typings": "lib/index",
   "scripts": {
-    "clean": "rm -rf lib umd __tmp__",
+    "clean": "rm -rf lib lib_es6 umd __tmp__",
     "lint": "$(npm bin)/tslint",
     "prepublish": "npm run clean && npm run build",
     "_serve_examples": "$(npm bin)/webpack-dev-server --config examples/webpack.config.js",
@@ -14,7 +14,9 @@
     "build_commonjs": "npm run clean && node_modules/.bin/tsc",
     "watch:build_commonjs": "npm run clean && node_modules/.bin/tsc --project tsconfig_lib.json --watch",
     "build_umd": "npm run clean && node_modules/.bin/tsc --project tsconfig_lib.json --module umd --outdir umd",
-    "build": "$(npm bin)/typings install && $(npm bin)/tsc --project tsconfig_lib.json && $(npm bin)/babel lib_es6 -d lib"
+    "build_ts_lib_es6": "$(npm bin)/typings install && $(npm bin)/tsc --project tsconfig_lib.json",
+    "lib_es6_to_lib": "$(npm bin)/babel lib_es6 -d lib && $(npm bin)/copyfiles -u 1 'lib_es6/*.d.ts' lib",
+    "build": "npm run build_ts_lib_es6 && npm run lib_es6_to_lib"
   },
   "repository": {
     "type": "git",
@@ -44,7 +46,7 @@
   },
   "devDependencies": {
     "autoprefixer": "^6.1.2",
-    "babel-cli": "^6.3.17",
+    "babel-cli": "^6.7.7",
     "babel-core": "^6.3.17",
     "babel-jest": "^10.0.1",
     "babel-loader": "^6.2.0",
@@ -54,6 +56,7 @@
     "babel-preset-stage-0": "^6.3.13",
     "codemirror": "^5.9.0",
     "component-playground": "^1.2.0",
+    "copy-files": "^0.1.0",
     "core-decorators": "^0.12.2",
     "enzyme": "^2.2.0",
     "eslint": "^2.7.0",

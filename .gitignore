@@ -1,6 +1,7 @@
 node_modules
 dist
 lib
+lib_es6
 umd
 typings
 __tmp__
