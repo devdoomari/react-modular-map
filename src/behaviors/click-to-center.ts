@@ -14,9 +14,9 @@ export default class ClickToCenter implements IBehavior {
       return event.type === 'click';
     });
     clickStream.subscribe((event) => {
-      const x = event.offsetX;
-      const y = event.offsetY;
-      const newCenter = controller.pointToLatLng({x, y});
+      const left = event.offsetX;
+      const top = event.offsetY;
+      const newCenter = controller.pointToLatLng({left, top});
       controller.setCenter(newCenter);
     });
   }
