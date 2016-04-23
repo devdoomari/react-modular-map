@@ -33,10 +33,15 @@ export default class SyncMapProvider extends BaseMapProvider {
     this.mapController = new MapController();
   }
   @autobind
-  initialize(domNode: HTMLElement, options: any) {
+  initialize(domNode: HTMLElement, options) {
     this.domNode = domNode;
+    debugger;
     ReactDOM.render(
-      <SyncMapView controller={this.mapController}/>
+      <SyncMapView
+        controller={this.mapController}
+        initialDimension={options.dimension}
+        center={options.center}
+      />
     , this.domNode);
     this.initDefer.resolve();
   }

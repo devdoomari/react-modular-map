@@ -45,7 +45,6 @@ export default class DragToMoveAround implements IBehavior {
           const centerPoint = controller.latLngToPoint(
             controller.getCenter()
           );
-          debugger;
           const newCenterPoint = {
             left: posDelta.left + centerPoint.left,
             top: posDelta.top + centerPoint.top,

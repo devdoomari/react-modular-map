@@ -10,16 +10,18 @@ import {
 
 import MapController from './map_controller';
 import {
-  Interfaces,
-} from '../src';
+  IPoint, ILatLng, IDimension,
+} from '../src/interfaces';
 
 import MapCalculator from './map-calculator';
 
 export interface ISyncMapViewProps {
   controller: MapController;
+  initialDimension: IDimension;
+  center: ILatLng;
 }
 export interface ISyncMapViewState {
-  center: Interfaces.ILatLng;
+  center: ILatLng;
   zoomLevel: Number;
 }
 
@@ -33,15 +35,13 @@ export default class SyncMapView extends React.Component<any, any> {
     this.props.controller.latLngToPoint = this.latLngToPoint;
     this.props.controller.getCenter = this.getCenter;
     this.state = {
-      center: {
-        lat: 0, lng: 0,
-      },
-      minLat: -7,
-      maxLat: 7,
-      minLng: -5,
-      maxLng: 5,
-      width: 100,
-      height: 100,
+      center: this.props.center,
+      minLat: -10,
+      maxLat: 10,
+      minLng: -10,
+      maxLng: 10,
+      width: this.props.initialDimension.width,
+      height: this.props.initialDimension.height,
       zoomLevel: 1,
     };
     const unitLat = this.__getUnitLatToPixels();
@@ -59,25 +59,24 @@ export default class SyncMapView extends React.Component<any, any> {
     this.props.controller.unsubscribeCenterChanged(this.handleSetCenter);
   }
   @autobind
-  latLngToPoint(latlng: Interfaces.ILatLng): Interfaces.IPoint {
-    const pointOnView = this.mapCalculator.latLngToPointOnView(latlng);
+  latLngToPoint(latlng: ILatLng): IPoint {
+    const pointOnView = this.mapCalculator.latlngToPointOnView(latlng);
     return {
-      left: pointOnView.leftOnView, top: pointOnView.topOnView,
+      left: pointOnView.left, top: pointOnView.top,
     };
   }
   @autobind
-  pointToLatLng(point: Interfaces.IPoint): Interfaces.ILatLng {
-    const latlng = this.mapCalculator.pointOnViewToLatLng({
-      leftOnView: point.left, topOnView: point.top,
-    });
+  pointToLatLng(point: IPoint): ILatLng {
+    const latlng = this.mapCalculator.pointOnViewToLatLng(point);
     return latlng;
   }
   @autobind
-  handleSetCenter (center: Interfaces.ILatLng) {
+  handleSetCenter (center: ILatLng) {
+    debugger;
     this.setState({center});
   }
   @autobind
-  handleSetDimension(dimension: Interfaces.IDimension) {
+  handleSetDimension(dimension: IDimension) {
     this.setState({
       width: dimension.width,
       height: dimension.height,
@@ -88,7 +87,7 @@ export default class SyncMapView extends React.Component<any, any> {
     return this.state.zoomLevel;
   }
   @autobind
-  getCenter(): Interfaces.ILatLng {
+  getCenter(): ILatLng {
     return this.state.center;
   }
   @autobind
@@ -111,9 +110,10 @@ export default class SyncMapView extends React.Component<any, any> {
     const xRange = _.range(this.state.minLng, this.state.maxLng);
     const yRange = _.range(this.state.minLat, this.state.maxLat);
 
-    const viewOffsetFromMap = this.mapCalculator.getViewOffsetOnMap();
-    const left = -(viewOffsetFromMap.leftFromMinLng);
-    const top = -(viewOffsetFromMap.topFromMinLat);
+    const viewEdgeFromMin = this.mapCalculator.getViewEdgeFromMin();
+    const left = -(viewEdgeFromMin.xFromMin);
+    const top = -(viewEdgeFromMin.yFromMin);
+    debugger;
     const gridTable = (
       <div>
         {_.map(yRange, (y) => {

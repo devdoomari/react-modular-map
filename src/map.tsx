@@ -1,5 +1,6 @@
 import * as React from 'react';
 import * as Rx from 'rxjs';
+import * as _ from 'lodash';
 
 import BaseMapProvider from './types/base-map-provider';
 export { BaseMapProvider };
@@ -55,8 +56,8 @@ export default class ReactMap extends React.Component<ReactMapProps, ReactMapSta
     const map = this.refs.mapDiv;
     this.props.mapProvider.initialize(map, {
       center: {
-        lat: this.props.lat ? this.props.lat : this.props.initialLat,
-        lng: this.props.lng ? this.props.lng : this.props.initialLng,
+        lat: _.isNumber(this.props.lat) ? this.props.lat : this.props.initialLat,
+        lng: _.isNumber(this.props.lng) ? this.props.lng : this.props.initialLng,
       },
       dimension: {
         width: this.props.style.width,

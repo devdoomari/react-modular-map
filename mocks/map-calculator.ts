@@ -3,31 +3,21 @@ import {
 } from 'core-decorators';
 
 import {
-  Interfaces,
-} from '../src';
+  IPoint, ILatLng,
+} from '../src/interfaces';
 
-export interface IOffsetFromMinLatLng {
-  leftFromMinLng: Number;
-  topFromMinLat: Number;
-};
+export interface IXY {
+  x: Number;
+  y: Number;
+}
 
-export interface IOffsetFromOrigin {
-  leftFromOrigin: Number;
-  topFromOrigin: Number;
-};
+export interface IMinOffset {
+  xFromMin: Number;
+  yFromMin: Number;
+}
 
-export interface ILatLngFromMinLatLng {
-  latFromMinLat: Number;
-  lngFromMinLng: Number;
-};
-
-export interface IPointOnView {
-  leftOnView: Number;
-  topOnView: Number;
-};
-
-export interface MapCalculatorArgs {
-  center: Interfaces.ILatLng;
+export interface IMapCalculatorArgs {
+  center: ILatLng;
   unitLng: Number;
   unitLat: Number;
   width: Number;
@@ -37,8 +27,10 @@ export interface MapCalculatorArgs {
   minLng: Number;
   maxLng: Number;
 };
+
+@autobind
 export default class MapCalculator {
-  center: Interfaces.ILatLng;
+  center: ILatLng;
   unitLng: Number;
   unitLat: Number;
   width: Number;
@@ -47,7 +39,8 @@ export default class MapCalculator {
   maxLat: Number;
   minLng: Number;
   maxLng: Number;
-  constructor(args: MapCalculatorArgs) {
+  constructor(args: IMapCalculatorArgs) {
+    debugger;
     this.center = args.center;
     this.unitLng = args.unitLng;
     this.unitLat = args.unitLat;
@@ -58,88 +51,60 @@ export default class MapCalculator {
     this.minLng = args.minLng;
     this.maxLng = args.maxLng;
   }
-  @autobind
-  getLatLngFromMinLatLng(latlng: Interfaces.ILatLng): ILatLngFromMinLatLng {
-    const originLatLngFromMinLatLng = this.getOriginLatLngFromMinLatLng();
+
+  latLngToXY(latlng: ILatLng): IXY {
     return {
-      latFromMinLat: Number(originLatLngFromMinLatLng.lat) + Number(latlng.lat),
-      lngFromMinLng: Number(originLatLngFromMinLatLng.lng) + Number(latlng.lng),
+      x: Number(latlng.lng) * Number(this.unitLng),
+      y: Number(latlng.lat) * Number(this.unitLat),
     };
   }
-  @autobind
-  toLatLngFromOrigin(latlngFromMin: ILatLngFromMinLatLng): Interfaces.ILatLng {
-    const originLatLngFromMinLatLng = this.getOriginLatLngFromMinLatLng();
+
+  xyToLatLng(xy: IXY) {
     return {
-      lat: Number(latlngFromMin.latFromMinLat) - Number(originLatLngFromMinLatLng.lat),
-      lng: Number(latlngFromMin.lngFromMinLng) - Number(originLatLngFromMinLatLng.lng),
-    }
-  }
-  @autobind
-  getOriginLatLngFromMinLatLng(): Interfaces.ILatLng {
-    return {
-      lat: (-this.minLat) * Number(this.unitLat),
-      lng: (-this.minLng) * Number(this.unitLng),
+      lat: Number(xy.y) / Number(this.unitLat),
+      lng: Number(xy.x) / Number(this.unitLng),
     };
   }
-  @autobind
-  getPointOffsetOnMap(latlng: Interfaces.ILatLng): IOffsetFromMinLatLng {
-    const latlngFromMinLatLn = this.getLatLngFromMinLatLng(latlng);
-    return {
-      topFromMinLat: Number(latlngFromMinLatLn.latFromMinLat) * Number(this.unitLat),
-      leftFromMinLng: Number(latlngFromMinLatLn.lngFromMinLng) * Number(this.unitLng),
-    };
-  }
-  @autobind
-  getPointOffsetFromOrigin(latlng: Interfaces.ILatLng): Interfaces.IPoint {
-    return {
-      top: Number(latlng.lat) * Number(this.unitLat),
-      left: Number(latlng.lng) * Number(this.unitLng),
-    };
-  }
-  @autobind
-  getViewOffsetOnMap(): IOffsetFromMinLatLng {
-    const centerPointOffsetOnMap = this.getPointOffsetOnMap(this.center);
-    return {
-      leftFromMinLng:
-        Number(centerPointOffsetOnMap.leftFromMinLng) - (Number(this.width) / 2),
-      topFromMinLat:
-        Number(centerPointOffsetOnMap.topFromMinLat) - (Number(this.height) / 2),
-    };
-  }
-  @autobind
-  getOffsetFromOrigin(latlng: Interfaces.ILatLng): Interfaces.IPoint {
-    return {
-      top: Number(latlng.lat) * Number(this.unitLat),
-      left: Number(latlng.lng) * Number(this.unitLng),
-    };
-  }
-  @autobind
-  getViewOffsetFromOrigin(): IOffsetFromOrigin {
-    const centerOffsetFromOrigin = this.getOffsetFromOrigin(this.center);
-    return {
-      leftFromOrigin: Number(centerOffsetFromOrigin.left) - (Number(this.width) / 2),
-      topFromOrigin: Number(centerOffsetFromOrigin.top) - (Number(this.height) / 2),
-    }
-  }
-  @autobind
-  pointOnViewToLatLng(pointOnView: IPointOnView): Interfaces.ILatLng {
-    const viewOffsetFromOrigin = this.getViewOffsetFromOrigin();
-    const pointFromOrigin = {
-      left: Number(viewOffsetFromOrigin.leftFromOrigin) + Number(pointOnView.leftOnView),
-      top: Number(viewOffsetFromOrigin.topFromOrigin) + Number(pointOnView.topOnView),
+
+  xyToOffsetFromMin(xy: IXY): IMinOffset {
+    const offsetFromMinToOrigin = {
+      x: Number(this.minLng) * Number(this.unitLng),
+      y: Number(this.minLat) * Number(this.unitLat),
     };
     return {
-      lat: Number(pointFromOrigin.left) / Number(this.unitLat),
-      lng: Number(pointFromOrigin.top) / Number(this.unitLng),
+      xFromMin: Number(xy.x) - offsetFromMinToOrigin.x,
+      yFromMin: Number(xy.y) - offsetFromMinToOrigin.y,
     };
   }
-  @autobind
-  latLngToPointOnView(latlng: Interfaces.ILatLng): IPointOnView {
-    const pointFromOrigin = this.getPointOffsetFromOrigin(latlng);
-    const viewFromOrigin = this.getViewOffsetFromOrigin();
+
+  getViewEdgeXY(): IXY {
+    const originToCenterXY = this.latLngToXY(this.center);
     return {
-      leftOnView: Number(pointFromOrigin.left) - Number(viewFromOrigin.leftFromOrigin),
-      topOnView: Number(pointFromOrigin.top) - Number(viewFromOrigin.topFromOrigin),
+      x: Number(originToCenterXY.x) - (Number(this.width) / 2),
+      y: Number(originToCenterXY.y) - (Number(this.height) / 2),
+    };
+  }
+
+  getViewEdgeFromMin(): IMinOffset {
+    const viewEdgeXY = this.getViewEdgeXY();
+    return this.xyToOffsetFromMin(viewEdgeXY);
+  }
+
+  pointOnViewToLatLng(point: IPoint): ILatLng {
+    const viewEdgeXY = this.getViewEdgeXY();
+    const pointXY = {
+      x: Number(viewEdgeXY.x) + Number(point.left),
+      y: Number(viewEdgeXY.y) + Number(point.top),
+    };
+    return this.xyToLatLng(pointXY);
+  }
+
+  latlngToPointOnView(latlng: ILatLng): IPoint {
+    const xy = this.latLngToXY(latlng);
+    const viewEdgeXY = this.getViewEdgeXY();
+    return {
+      left: Number(xy.x) - Number(viewEdgeXY.x),
+      top: Number(xy.y) - Number(viewEdgeXY.y),
     };
   }
 }
