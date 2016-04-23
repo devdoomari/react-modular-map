@@ -8,10 +8,10 @@ import {
 } from './interfaces';
 
 export interface IMapControllerArgs {
-  pointToLatLng: any;
-  latLngToPoint: any;
-  getCenter: any;
-  getZoomLevel: any;
+  pointToLatLng(point: IPoint): ILatLng;
+  latLngToPoint(latlng: ILatLng): IPoint;
+  getCenter(): ILatLng;
+  getZoomLevel(): Number;
 }
 export default class MapController {
   eventEmitter: any;
