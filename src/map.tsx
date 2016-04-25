@@ -150,6 +150,7 @@ export default class ReactMap extends React.Component<ReactMapProps, any> {
           onDragStart={this.handleMouseEvent}
           onDragEnd={this.handleMouseEvent}
           onClick={this.handleMouseEvent}
+          onWheel={this.handleMouseEvent}
           style={{
             width: this.props.style.width,
             height: this.props.style.height,

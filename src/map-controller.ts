@@ -35,7 +35,7 @@ export default class MapController {
   setCenter(center: ILatLng) {
     this.eventEmitter.emit(SET_CENTER, center);
   }
-  setZoom(zoomLevel: Number) {
+  setZoomLevel(zoomLevel: Number) {
     this.eventEmitter.emit(SET_ZOOMLEVEL, zoomLevel);
   }
 }

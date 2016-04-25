@@ -41,6 +41,7 @@ class MapViewDemo extends Component {
               behaviors={[
                 new Behaviors.ClickToCenter(),
                 new Behaviors.DragToMoveAround(),
+                new Behaviors.ScrollToZoomIn(),
               ]}
               initialCenter={{ lat: 0, lng: 0 }}
             >
