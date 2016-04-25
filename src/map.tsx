@@ -117,7 +117,15 @@ export default class ReactMap extends React.Component<ReactMapProps, any> {
           zoomLevel: this.state.zoomLevel,
         }), child.props.children
       );
-      return newChild;
+      return (
+        <div style={{
+          position: 'absolute',
+          left: 0, top: 0,
+        }}
+        >
+          {newChild}
+        </div>
+      );
     });
   }
   render() {
