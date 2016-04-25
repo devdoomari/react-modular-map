@@ -16,6 +16,15 @@ export default class MapController {
   constructor() {
     this.eventEmitter = new EventEmitter();
   }
+  setPointToLatLng(func) {
+    this.pointToLatLng = func;
+  }
+  setLatLngToPoint(func) {
+    this.latLngToPoint = func;
+  }
+  setGetCenter(func) {
+    this.getCenter = func;
+  }
   subscribeCenterChanged(func) {
     this.eventEmitter.on(CENTER_CHANGED, func);
   }

@@ -8,12 +8,12 @@ import {
   Table,
 } from 'react-bootstrap';
 
-import MapController from './map_controller';
+import MapController from './sync-map-controller';
 import {
   IPoint, ILatLng, IDimension,
 } from '../src/interfaces';
 
-import MapCalculator from './map-calculator';
+import MapCalculator from './sync-map-calculator';
 
 export interface ISyncMapViewProps {
   controller: MapController;
@@ -31,9 +31,9 @@ export default class SyncMapView extends React.Component<any, any> {
   mapCalculator: MapCalculator;
   constructor(props) {
     super(props);
-    this.props.controller.pointToLatLng = this.pointToLatLng;
-    this.props.controller.latLngToPoint = this.latLngToPoint;
-    this.props.controller.getCenter = this.getCenter;
+    this.props.controller.setPointToLatLng(this.pointToLatLng);
+    this.props.controller.setLatLngToPoint(this.latLngToPoint);
+    this.props.controller.setGetCenter(this.getCenter);
     this.state = {
       center: this.props.center,
       minLat: -10,

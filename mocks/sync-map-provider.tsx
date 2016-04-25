@@ -18,7 +18,7 @@ import {
   Interfaces,
 } from '../src';
 
-import MapController from './map_controller';
+import MapController from './sync-map-controller';
 
 export default class SyncMapProvider extends BaseMapProvider {
   height: Number;
@@ -33,9 +33,8 @@ export default class SyncMapProvider extends BaseMapProvider {
     this.mapController = new MapController();
   }
   @autobind
-  initialize(domNode: HTMLElement, options) {
+  async initialize(domNode: HTMLElement, options) {
     this.domNode = domNode;
-    debugger;
     ReactDOM.render(
       <SyncMapView
         controller={this.mapController}
@@ -43,6 +42,7 @@ export default class SyncMapProvider extends BaseMapProvider {
         center={options.center}
       />
     , this.domNode);
+    debugger;
     this.initDefer.resolve();
   }
   @autobind
@@ -68,14 +68,14 @@ export default class SyncMapProvider extends BaseMapProvider {
   getZoomLevel() {
     return this.zoomLevel;
   }
-  onBoundsChanged(handler: Interfaces.IBoundsChangedHandler) {
-
+  __onBoundsChanged(handler: Interfaces.IBoundsChangedHandler) {
+    // pass.
   }
-  onZoomChanged(handler: Interfaces.IZoomLevelChangedHandler) {
-
+  __onZoomLevelChanged(handler: Interfaces.IZoomLevelChangedHandler) {
+    this.mapController.subscribeZoomLevelChanged(handler);
   }
-  onCenterChanged(handler: Interfaces.ICenterChangedHandler) {
-
+  __onCenterChanged(handler: Interfaces.ICenterChangedHandler) {
+    this.mapController.subscribeCenterChanged(handler);
   }
   @autobind
   pointToLatLng(point: Interfaces.IPoint): Interfaces.ILatLng {
@@ -83,6 +83,7 @@ export default class SyncMapProvider extends BaseMapProvider {
   }
   @autobind
   latLngToPoint(latlng: Interfaces.ILatLng): Interfaces.IPoint {
+    debugger;
     return this.mapController.latLngToPoint(latlng);
   }
 

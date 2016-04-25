@@ -40,7 +40,6 @@ export default class MapCalculator {
   minLng: Number;
   maxLng: Number;
   constructor(args: IMapCalculatorArgs) {
-    debugger;
     this.center = args.center;
     this.unitLng = args.unitLng;
     this.unitLat = args.unitLat;
