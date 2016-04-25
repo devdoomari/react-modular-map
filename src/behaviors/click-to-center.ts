@@ -10,8 +10,17 @@ export default class ClickToCenter implements IBehavior {
   constructor() {
   }
   initialize(eventsStream: Rx.Subject<any>, controller: MapController) {
-    const clickStream = eventsStream.filter((event) => {
-      return event.type === 'click';
+    const mouseDownStream = eventsStream.filter(
+      event => event.type === 'mousedown'
+    );
+    const mouseUpStream = eventsStream.filter(
+      event => event.type === 'mouseup'
+    );
+    const mouseMoveStream = eventsStream.filter(
+      event => event.type === 'mousemove'
+    );
+    const clickStream = mouseDownStream.flatMap((mouseDown) => {
+      return mouseUpStream.timeoutWith(100, Rx.Observable.empty());
     });
     clickStream.subscribe((event) => {
       const left = event.offsetX;
