@@ -17,6 +17,7 @@ import {
 import {
   APIKEY,
 } from './config';
+import Marker from './marker';
 
 class MapViewDemo extends Component {
   constructor(props) {
@@ -41,8 +42,10 @@ class MapViewDemo extends Component {
                 new Behaviors.ClickToCenter(),
                 new Behaviors.DragToMoveAround(),
               ]}
-              lat={0} lng={0}
-            />
+              initialCenter={{lat: 0, lng: 0}}
+            >
+              <Marker/>
+            </Map>
           </Col>
         </Row>
       </div>

@@ -2,10 +2,6 @@ import * as React from 'react';
 import * as Rx from 'rxjs';
 import * as _ from 'lodash';
 
-import {
-  autobind,
-} from 'core-decorators';
-
 import BaseMapProvider from './types/base-map-provider';
 export { BaseMapProvider };
 import {
@@ -21,28 +17,19 @@ export interface ReactMapProps {
   height: Number;
   behaviors: Array<IBehavior>;
 
-  initialCenter: ILatLng;
-  initialZoomLevel: Number;
-
-  onCenterChanged(center): any;
-  onZoomLevelChanged(zoomLevel): any;
+  // controlled input
+  lat: Number;
+  lng: Number;
+  zoomLevel: Number;
+  eventStreamSubscriber(): any;
 }
 export interface ReactMapState {
-  center: ILatLng;
-  zoomLevel: Number;
-  providerInitialized: Boolean;
-}
 
-@autobind
-export default class ReactMap extends React.Component<ReactMapProps, any> {
+}
+export default class ReactMap extends React.Component<ReactMapProps, ReactMapState> {
   eventsStream: any;
   refs: any;
   mapController: MapController;
-
-  static defaultProps = {
-    onCenterChanged() {},
-    onZoomLevelChanged() {},
-  }
   constructor(props) {
     super(props);
     this.eventsStream = new Rx.Subject<any>();
@@ -58,9 +45,7 @@ export default class ReactMap extends React.Component<ReactMapProps, any> {
       behavior.initialize(this.eventsStream, this.mapController);
     }
     this.state = {
-      center: this.props.initialCenter,
-      zoomLevel: this.props.initialZoomLevel,
-      providerInitialized: false,
+
     };
   }
   initMapController = (mapController: MapController) => {
@@ -68,29 +53,20 @@ export default class ReactMap extends React.Component<ReactMapProps, any> {
     mapController.subscribeSetZoom(this.handleSetZoom);
   };
 
-  componentDidMount = async () => {
+  componentDidMount = () => {
     const mapDiv = this.refs.mapDiv;
-    await this.props.mapProvider.initialize(mapDiv, {
-      center: this.props.initialCenter,
+    this.props.mapProvider.initialize(mapDiv, {
+      center: {
+        lat: this.props.lat,
+        lng: this.props.lng,
+      },
       dimension: {
         width: this.props.style.width,
         height: this.props.style.height,
       },
     });
-    this.props.mapProvider.onCenterChanged(this.handleCenterChanged);
-    this.props.mapProvider.onZoomLevelChanged(this.handleZoomLevelChanged);
-    this.setState({providerInitialized: true});
-  };
 
-  handleCenterChanged = (center: ILatLng) => {
-    debugger;
-    this.setState({center});
-    this.props.onCenterChanged(center);
-  }
-  handleZoomLevelChanged = (zoomLevel: Number) => {
-    this.props.onZoomLevelChanged(zoomLevel);
-    this.setState({zoomLevel});
-  }
+  };
 
   handleSetCenter = (center: ILatLng) => {
     this.props.mapProvider.setCenter(center);
@@ -103,26 +79,16 @@ export default class ReactMap extends React.Component<ReactMapProps, any> {
     this.eventsStream.next(nativeEvent);
   };
 
-  processChildren = (children) => {
-    if (!this.state.providerInitialized) {
-      return null;
-    }
-    return React.Children.map(this.props.children, (child: React.ReactElement<any>)=> {
+  render() {
+    const children = React.Children.map(this.props.children, (child: React.ReactElement<any>)=> {
       const newChild = React.cloneElement(child,
         Object.assign({}, child.props, {
           pointToLatLng: this.props.mapProvider.pointToLatLng,
           latLngToPoint: this.props.mapProvider.latLngToPoint,
-          width: this.props.style.width,
-          height: this.props.style.height,
-          center: this.state.center,
-          zoomLevel: this.state.zoomLevel,
         }), child.props.children
       );
       return newChild;
     });
-  }
-  render() {
-    const children = this.processChildren(this.props.children);
     return (
       <div
       >

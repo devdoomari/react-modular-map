@@ -20,10 +20,10 @@ export interface IMapInitArgs {
 }
 
 export interface IMapProvider {
-  setCenter(latlng: ILatLng): void;
-  setZoom(zoomLevel: Number): void;
-  pointToLatLng(p: IPoint): void;
-  onBoundsChanged(handler: IBoundsChangedHandler): void;
-  onZoomChanged(handler: IZoomLevelChangedHandler): void;
-  onCenterChanged(handler: ICenterChangedHandler): void;
+  setCenter(latlng: ILatLng): any;
+  setZoom(zoomLevel: Number): any;
+  pointToLatLng(p: IPoint): any;
+  onBoundsChanged(handler: IBoundsChangedHandler): any;
+  onZoomLevelChanged(handler: IZoomLevelChangedHandler): any;
+  onCenterChanged(handler: ICenterChangedHandler): any;
 }

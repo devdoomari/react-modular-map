@@ -15,16 +15,19 @@ abstract class BaseMapProvider implements IMapProvider {
   initDefer: any;
   initPromise: any;
   constructor(options: any) {
+    /*
+    initialize 3rd-party map api here.
+     */
     this.initDefer = Q.defer<any>();
     this.initPromise = this.initDefer.promise;
   }
   abstract async initialize(domNode: HTMLElement, options: IMapInitArgs);
-  abstract setDimensions(dimension: Interfaces.IDimension);
-  protected abstract __setCenter(center: Interfaces.ILatLng): void;
-  protected abstract __setZoom(zoomLevel: Number): void;
-  abstract onBoundsChanged(handler: IBoundsChangedHandler);
-  abstract onZoomChanged(handler: IZoomLevelChangedHandler);
-  abstract onCenterChanged(handler: ICenterChangedHandler);
+  abstract setDimensions(dimension: Interfaces.IDimension): any;
+  protected abstract __setCenter(center: Interfaces.ILatLng): any;
+  protected abstract __setZoom(zoomLevel: Number): any;
+  abstract __onBoundsChanged(handler: IBoundsChangedHandler): any;
+  abstract __onZoomLevelChanged(handler: IZoomLevelChangedHandler): any;
+  abstract __onCenterChanged(handler: ICenterChangedHandler): any;
 
   abstract getCenter(): Interfaces.ILatLng;
   abstract getZoomLevel(): Number;
@@ -38,6 +41,21 @@ abstract class BaseMapProvider implements IMapProvider {
   async setZoom(zoomLevel: Number) {
     await this.initPromise;
     this.__setZoom(zoomLevel);
+  }
+
+  async onBoundsChanged(handler: IBoundsChangedHandler) {
+    await this.initPromise;
+    this.__onBoundsChanged(handler);
+  }
+
+  async onCenterChanged(handler: ICenterChangedHandler) {
+    await this.initPromise;
+    this.__onCenterChanged(handler);
+  }
+
+  async onZoomLevelChanged(handler: IZoomLevelChangedHandler) {
+    await this.initPromise;
+    this.__onZoomLevelChanged(handler);
   }
 }
 
