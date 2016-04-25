@@ -83,7 +83,6 @@ export default class ReactMap extends React.Component<ReactMapProps, any> {
   };
 
   handleCenterChanged = (center: ILatLng) => {
-    debugger;
     this.setState({center});
     this.props.onCenterChanged(center);
   }
@@ -154,6 +153,7 @@ export default class ReactMap extends React.Component<ReactMapProps, any> {
             style={{
               width: this.props.style.width,
               height: this.props.style.height,
+              position: 'relative',
             }}
           >
             {children}

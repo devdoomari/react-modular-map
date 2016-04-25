@@ -42,7 +42,6 @@ export default class SyncMapProvider extends BaseMapProvider {
         center={options.center}
       />
     , this.domNode);
-    debugger;
     this.initDefer.resolve();
   }
   @autobind

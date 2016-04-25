@@ -42,9 +42,9 @@ class MapViewDemo extends Component {
                 new Behaviors.ClickToCenter(),
                 new Behaviors.DragToMoveAround(),
               ]}
-              initialCenter={{lat: 0, lng: 0}}
+              initialCenter={{ lat: 0, lng: 0 }}
             >
-              <Marker/>
+              <Marker position={{ lat: 0, lng: 0 }} />
             </Map>
           </Col>
         </Row>
