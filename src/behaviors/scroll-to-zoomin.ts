@@ -12,7 +12,7 @@ export default class ScrollToZoomIn implements IBehavior {
   initialize(eventsStream: Rx.Subject<any>, controller: MapController) {
     const mouseWheelStream = eventsStream.filter(
       event => event.type === 'wheel'
-    );
+    ).throttleTime(300);
 
     mouseWheelStream.subscribe((event) => {
       const left = event.offsetX;
