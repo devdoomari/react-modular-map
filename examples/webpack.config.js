@@ -1,8 +1,6 @@
 // const path = require('path');
 const webpack = require('webpack');
-const autoprefixer = require('autoprefixer');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
-const ExtractTextPlugin = require('extract-text-webpack-plugin');
 
 module.exports = {
 
@@ -14,6 +12,7 @@ module.exports = {
  */
   entry: {
     mapView: [
+      'babel-polyfill',
       './examples/mapview',
     ],
   },
@@ -54,11 +53,11 @@ module.exports = {
       exclude: /node_modules/,
     }, {
       test: /\.ts$/,
-      loader: 'ts',
+      loader: 'babel!ts',
       exclude: /node_modules/,
     }, {
       test: /\.tsx$/,
-      loader: 'ts',
+      loader: 'babel!ts',
       exclude: /node_modules/,
     }, {
       // Copy files to output,

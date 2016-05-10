@@ -9,18 +9,20 @@
     "experimentalDecorators": true,
     "noLib": false,
     "jsx": "react",
-    "outDir": "./__tmp__",
-    "rootDir": "."
+    "outDir": "lib_es6",
+    "rootDir": "src"
   },
+  "compileOnSave": false,
   "exclude": [
     "node_modules",
+    "!node_modules/rxjs",
     "static",
     "typings/browser.d.ts",
     "typings/browser",
     "__tests__",
-    "__tmp__",
     "lib",
     "lib_es6",
-    "umd"
+    "umd",
+    "mocks"
   ]
 }
