@@ -27,7 +27,8 @@ export default class DragToMoveAround implements IBehavior {
         .map((event) => {
           const left = event.offsetX;
           const top = event.offsetY;
-          return {left, top};
+          const center = controller.getCenter();
+          return {left, top, center};
         })
         // TODO: Throttle by onCenterChanged.
         .scan((positions, pos) => {
@@ -37,13 +38,13 @@ export default class DragToMoveAround implements IBehavior {
         .subscribe((positions) => {
           if (positions.length < 2) { return; }
           const toPos = positions[positions.length - 1];
-          const fromPos = positions[positions.length - 2];
+          const startPos = positions[0];
           const posDelta = {
-            left: fromPos.left - toPos.left,
-            top: fromPos.top - toPos.top,
+            left: startPos.left - toPos.left,
+            top: startPos.top - toPos.top,
           };
           const centerPoint = controller.latLngToPoint(
-            controller.getCenter()
+            startPos.center
           );
           const newCenterPoint = {
             left: posDelta.left + centerPoint.left,

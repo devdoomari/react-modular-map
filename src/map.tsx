@@ -131,8 +131,7 @@ export default class ReactMap extends React.Component<ReactMapProps, any> {
   render() {
     const children = this.processChildren(this.props.children);
     return (
-      <div
-      >
+      <div>
         <div ref="mapDiv"
              key="map"
              style={{
