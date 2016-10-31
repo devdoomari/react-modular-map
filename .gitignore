@@ -6,3 +6,4 @@ umd
 typings
 __tmp__
 *.log
+.idea

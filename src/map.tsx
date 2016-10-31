@@ -106,7 +106,9 @@ export default class ReactMap extends React.Component<ReactMapProps, any> {
     if (!this.state.providerInitialized) {
       return null;
     }
-    return React.Children.map(this.props.children, (child: React.ReactElement<any>)=> {
+    return React.Children.map(
+        this.props.children, 
+        (child: React.ReactElement<any>, nth)=> {
       const newChild = React.cloneElement(child,
         Object.assign({}, child.props, {
           pointToLatLng: this.props.mapProvider.pointToLatLng,
@@ -118,10 +120,12 @@ export default class ReactMap extends React.Component<ReactMapProps, any> {
         }), child.props.children
       );
       return (
-        <div style={{
-          position: 'absolute',
-          left: 0, top: 0,
-        }}
+        <div
+          key={nth}
+          style={{
+            position: 'absolute',
+            left: 0, top: 0,
+          }}
         >
           {newChild}
         </div>

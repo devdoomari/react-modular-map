@@ -48,6 +48,12 @@ class MapViewDemo extends Component {
                 initialCenter={{ lat: 0, lng: 0 }}
               >
                 <Marker position={{ lat: 0, lng: 0 }} />
+                <Marker position={{ lat: 1, lng: 0 }} />
+                <Marker position={{ lat: 0, lng: 1 }} />
+                <Marker position={{ lat: 1, lng: 1 }} />
+                <Marker position={{ lat: -1, lng: 0 }} />
+                <Marker position={{ lat: 0, lng: -1 }} />
+                <Marker position={{ lat: -1, lng: 0 }} />
               </Map>
             </div>
           </Col>

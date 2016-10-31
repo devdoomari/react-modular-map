@@ -22,6 +22,7 @@
     "__tests__",
     "lib",
     "lib_es6",
+    "examples",
     "umd",
     "mocks"
   ]
