@@ -16,16 +16,17 @@ import MapController from './map-controller';
 
 export interface ReactMapProps {
   mapProvider: BaseMapProvider;
-  style: any;
-  width: Number;
-  height: Number;
+  style: {
+    width: number;
+    height: number;
+  } & React.CSSProperties;
   behaviors: Array<IBehavior>;
 
   initialCenter: ILatLng;
   initialZoomLevel: Number;
 
-  onCenterChanged(center): any;
-  onZoomLevelChanged(zoomLevel): any;
+  onCenterChanged?: (center) => any;
+  onZoomLevelChanged?: (zoomLevel) => any;
 }
 export interface ReactMapState {
   center: ILatLng;
