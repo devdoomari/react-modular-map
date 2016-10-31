@@ -1,0 +1,24 @@
+import * as Interfaces from '../interfaces';
+import { IBoundsChangedHandler, ICenterChangedHandler, IZoomLevelChangedHandler, IMapProvider, IMapInitArgs } from '../interfaces/map_provider';
+declare abstract class BaseMapProvider implements IMapProvider {
+    initDefer: any;
+    initPromise: any;
+    constructor(options: any);
+    abstract initialize(domNode: HTMLElement, options: IMapInitArgs): any;
+    abstract setDimensions(dimension: Interfaces.IDimension): any;
+    protected abstract __setCenter(center: Interfaces.ILatLng): any;
+    protected abstract __setZoom(zoomLevel: Number): any;
+    abstract __onBoundsChanged(handler: IBoundsChangedHandler): any;
+    abstract __onZoomLevelChanged(handler: IZoomLevelChangedHandler): any;
+    abstract __onCenterChanged(handler: ICenterChangedHandler): any;
+    abstract getCenter(): Interfaces.ILatLng;
+    abstract getZoomLevel(): Number;
+    abstract pointToLatLng(point: Interfaces.IPoint): Interfaces.ILatLng;
+    abstract latLngToPoint(latlng: Interfaces.ILatLng): Interfaces.IPoint;
+    setCenter(center: Interfaces.ILatLng): Promise<void>;
+    setZoom(zoomLevel: Number): Promise<void>;
+    onBoundsChanged(handler: IBoundsChangedHandler): Promise<void>;
+    onCenterChanged(handler: ICenterChangedHandler): Promise<void>;
+    onZoomLevelChanged(handler: IZoomLevelChangedHandler): Promise<void>;
+}
+export default BaseMapProvider;
